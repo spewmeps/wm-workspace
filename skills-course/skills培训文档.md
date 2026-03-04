@@ -1,6 +1,6 @@
-# Skills 开发与应用培训大纲
+# Skills 开发与应用指南
 
-本培训文档旨在帮助开发者和运维人员首先深入理解 Skills 的核心机制与开发范式，进而掌握基于 Witty 平台开发和执行 Skills 的流程。Witty 平台主要包含 [witty-diagnosis-agent](https://atomgit.com/openeuler/witty-diagnosis-agent) 和 [witty-skill-insight](https://atomgit.com/openeuler/witty-skill-insight) 两个核心项目。
+本培训文档旨在帮助开发者和运维人员首先深入理解 Skills 的核心机制与开发范式，进而掌握基于 Witty 平台开发和执行 Skills 的流程。Witty 平台主要包含两个核心项目：[witty-diagnosis-agent](https://atomgit.com/openeuler/witty-diagnosis-agent) 专注于工程化在运维场景的执行和分析流程，通过标准化故障诊断步骤和自动化分析工具，显著提升故障诊断效率；[witty-skill-insight](https://atomgit.com/openeuler/witty-skill-insight) 围绕 Skills 的生命周期管理（包括 Skill 生成、链路跟踪、迭代优化），通过智能化工具降低 Skills 的使用门槛，让开发者和运维人员能够更高效地创建、应用和优化 Skills。
 
 **核心目标**：
 1.  **Skills 核心概念**：阐述 Skills 的基本能力与优势，解析 Witty 框架与 Skills 的关系。
