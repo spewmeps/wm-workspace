@@ -1,0 +1,18 @@
+# versioninfo 模块日志分析指南
+
+## 1. 模块概述
+通用模块日志
+
+## 2. 典型故障分析思路
+- 请根据日志内容进行分析。
+
+## 3. 详细日志清单
+| 收集项文件 | 内容说明 | 详细作用 | 关联故障场景 |
+| --- | --- | --- | --- |
+ | ibmc_revision.txt | iBMC版本编译节点信息 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
+ | app_revision.txt | iBMC版本信息 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
+ | build_date.txt | iBMC版本构建时间 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
+ | fruinfo.txt | FRU电子标签信息 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
+ | RTOS-Release | RTOS版本信息 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
+ | RTOS-Revision | RTOS版本标记号 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
+ | server_config.txt | 服务器当前的配置信息 | versioninfo 模块的相关配置文件或状态信息。 | 该模块功能异常、状态查询失败或配置不生效 | 
