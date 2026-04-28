@@ -1,0 +1,702 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.app{display:flex;height:780px;background:#fff;border:1px solid #e8e6e0;border-radius:14px;overflow:hidden;font-family:var(--font-sans)}
+
+.sb{width:208px;flex-shrink:0;background:#f7f6f3;border-right:1px solid #eceae4;display:flex;flex-direction:column}
+.sb-logo{padding:16px 14px 12px;border-bottom:1px solid #eceae4;display:flex;align-items:center;gap:9px}
+.logo-mark{width:26px;height:26px;border-radius:7px;background:#534AB7;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.logo-name{font-size:12.5px;font-weight:500;color:#1a1a18}
+.logo-env{font-size:10px;color:#a8a6a0;margin-top:1px}
+
+.sb-body{flex:1;overflow-y:auto;padding:6px 0 10px}
+.sb-group{margin-top:4px}
+.sb-group-label{padding:10px 14px 3px;font-size:9.5px;font-weight:500;color:#c0bdb6;letter-spacing:.9px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.sb-group-label svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.6;opacity:.6}
+
+.ni{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 12px;margin:1px 5px;border-radius:7px;cursor:pointer;font-size:12px;color:#6b6a66;border:none;background:none;width:calc(100% - 10px);text-align:left;transition:all .12s;position:relative}
+.ni:hover{background:#efeee9;color:#2c2b28}
+.ni.on{background:#EEEDFE;color:#3C3489;font-weight:500}
+.ni svg{width:14px;height:14px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
+.ni.on svg{opacity:1}
+.ni-badge{margin-left:auto;font-size:10px;padding:1px 5px;border-radius:8px;font-weight:500;flex-shrink:0}
+.ni-badge.r{background:#FCEBEB;color:#A32D2D}
+.ni-badge.y{background:#FAEEDA;color:#854F0B}
+.ni-badge.g{background:#E1F5EE;color:#0F6E56}
+
+.sb-divider{height:1px;background:#eceae4;margin:8px 10px}
+
+.sb-footer{padding:10px 12px;border-top:1px solid #eceae4}
+.user-row{display:flex;align-items:center;gap:8px}
+.ava{width:28px;height:28px;border-radius:50%;background:#EEEDFE;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:500;color:#3C3489;flex-shrink:0}
+.ava-name{font-size:11.5px;font-weight:500;color:#2c2b28}
+.ava-role{font-size:10px;color:#a8a6a0;margin-top:1px}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:50px;padding:0 18px;border-bottom:1px solid #eceae4;display:flex;align-items:center;gap:8px;flex-shrink:0;background:#fff}
+.tb-crumb{font-size:11.5px;color:#b0aea8}
+.tb-sep{color:#d8d6d0;margin:0 1px;font-size:12px}
+.tb-title{font-size:13px;font-weight:500;color:#1a1a18}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11.5px;border:1px solid #e8e6e0;background:#fff;color:#4a4946;cursor:pointer;transition:background .1s}
+.chip:hover{background:#f5f4f0}
+.chip svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.6}
+.btn-p{padding:5px 13px;border-radius:7px;font-size:11.5px;font-weight:500;background:#534AB7;color:#fff;border:none;cursor:pointer}
+.btn-p:hover{background:#3C3489}
+.btn-s{padding:4px 10px;border-radius:6px;font-size:11px;border:1px solid #e8e6e0;background:#fff;color:#4a4946;cursor:pointer}
+.btn-s:hover{background:#f5f4f0}
+.btn-sp{padding:4px 10px;border-radius:6px;font-size:11px;background:#EEEDFE;color:#3C3489;border:1px solid #CECBF6;cursor:pointer;font-weight:500}
+
+.content{flex:1;overflow-y:auto;padding:18px 20px}
+.panel{display:none}.panel.on{display:block}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-bottom:16px}
+.stat{background:#f7f6f3;border:1px solid #eceae4;border-radius:9px;padding:12px 14px}
+.stat-lbl{font-size:10.5px;color:#a8a6a0;margin-bottom:5px}
+.stat-val{font-size:21px;font-weight:500;color:#1a1a18;line-height:1;letter-spacing:-.5px}
+.stat-d{font-size:10.5px;margin-top:3px}
+.up{color:#0F6E56}.dn{color:#A32D2D}
+
+.tabs{display:flex;border-bottom:1px solid #eceae4;margin-bottom:14px}
+.tab{padding:7px 13px;font-size:11.5px;color:#8a8884;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab.on{color:#534AB7;border-bottom-color:#534AB7;font-weight:500}
+
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.sh-t{font-size:12.5px;font-weight:500;color:#1a1a18}
+.sh-h{font-size:10.5px;color:#b8b6b0}
+
+.card{background:#fff;border:1px solid #eceae4;border-radius:9px;overflow:hidden;margin-bottom:12px}
+
+.trow{display:flex;align-items:center;padding:9px 14px;border-bottom:1px solid #f3f2ee;cursor:pointer;gap:9px;transition:background .1s}
+.trow:hover{background:#f7f6f3}
+.trow:last-child{border-bottom:none}
+.tid{font-size:10px;font-family:var(--font-mono);color:#a8a6a0;width:76px;flex-shrink:0}
+.ttask{font-size:12px;color:#2c2b28;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbar{width:80px;flex-shrink:0}
+.tbar-bg{height:4px;background:#eceae4;border-radius:2px;overflow:hidden}
+.tbar-fg{height:100%;border-radius:2px}
+.tmeta{font-size:10.5px;color:#a8a6a0;width:40px;text-align:right;flex-shrink:0}
+
+.bdg{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500;flex-shrink:0}
+.bdg-g{background:#E1F5EE;color:#0F6E56}
+.bdg-y{background:#FAEEDA;color:#854F0B}
+.bdg-r{background:#FCEBEB;color:#A32D2D}
+.bdg-b{background:#EEEDFE;color:#3C3489}
+.bdg-gr{background:#f0eee9;color:#5F5E5A}
+
+.span-wrap{padding:12px 14px 4px}
+.span-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.span-type{width:56px;font-size:10px;color:#a8a6a0;text-align:right;flex-shrink:0}
+.span-track{flex:1;height:18px;background:#f3f2ee;border-radius:4px;overflow:hidden;position:relative}
+.span-blk{position:absolute;height:100%;border-radius:4px;display:flex;align-items:center;padding-left:7px;font-size:9.5px;font-weight:500}
+.span-ms{width:34px;font-size:10px;color:#a8a6a0;text-align:right;flex-shrink:0}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+
+.agcard{border:1px solid #eceae4;border-radius:9px;padding:12px;background:#fff;cursor:pointer;transition:border-color .12s}
+.agcard:hover{border-color:#AFA9EC}
+.agcard.sel{border-color:#534AB7;background:#fefefd}
+.ag-top{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.ag-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ag-name{font-size:12.5px;font-weight:500;color:#1a1a18}
+.ag-meta{font-size:10px;color:#a8a6a0;margin-top:1px}
+.ag-stats{display:flex;gap:10px;padding-top:9px;border-top:1px solid #f3f2ee}
+.ag-stat{font-size:10.5px;color:#a8a6a0}
+.ag-stat span{font-weight:500;color:#2c2b28}
+.ag-actions{display:flex;gap:5px;margin-top:9px}
+
+.skcard{border:1px solid #eceae4;border-radius:9px;padding:12px;background:#fff;transition:border-color .12s}
+.skcard:hover{border-color:#d0cecc}
+.sk-name{font-size:12.5px;font-weight:500;color:#1a1a18;margin-bottom:2px}
+.sk-ver{font-size:10px;color:#a8a6a0}
+.sk-stats{display:flex;gap:10px;margin-top:9px;padding-top:9px;border-top:1px solid #f3f2ee}
+.sk-stat{font-size:10.5px;color:#a8a6a0}
+.sk-stat span{font-weight:500;color:#2c2b28}
+.sk-actions{display:flex;gap:5px;margin-top:9px}
+
+.etable{width:100%;border-collapse:collapse;font-size:11.5px}
+.etable th{text-align:left;padding:8px 14px;font-size:10.5px;font-weight:500;color:#a8a6a0;border-bottom:1px solid #eceae4;background:#f7f6f3}
+.etable td{padding:9px 14px;border-bottom:1px solid #f3f2ee;color:#2c2b28}
+.etable tr:last-child td{border-bottom:none}
+.etable tr:hover td{background:#f7f6f3}
+.prog{display:flex;align-items:center;gap:5px}
+.prog-t{width:44px;height:4px;background:#eceae4;border-radius:2px;overflow:hidden}
+.prog-f{height:100%;border-radius:2px}
+
+.dscard{border:1px solid #eceae4;border-radius:9px;padding:12px;background:#fff}
+.ds-name{font-size:12.5px;font-weight:500;color:#1a1a18;margin-bottom:3px}
+.ds-meta{font-size:10.5px;color:#a8a6a0}
+.ds-stats{display:flex;gap:10px;margin-top:9px;padding-top:9px;border-top:1px solid #f3f2ee}
+.ds-stat{font-size:10.5px;color:#a8a6a0}
+.ds-stat span{font-weight:500;color:#2c2b28}
+
+.pg{border:1px solid #eceae4;border-radius:9px;overflow:hidden;margin-bottom:12px}
+.pg-bar{padding:7px 12px;background:#f7f6f3;border-bottom:1px solid #eceae4;display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:#8a8884}
+.pg-code{font-family:var(--font-mono);font-size:10.5px;line-height:1.7;padding:11px 14px;color:#2c2b28;background:#fff;white-space:pre}
+.pg-out{padding:9px 12px;background:#f4faf7;border-top:1px solid #eceae4;font-size:10.5px;color:#0F6E56;display:flex;align-items:center;gap:5px}
+
+.frow{display:flex;align-items:flex-start;padding:10px 14px;gap:9px;border-bottom:1px solid #f3f2ee;cursor:pointer;transition:background .1s}
+.frow:hover{background:#f7f6f3}
+.frow:last-child{border-bottom:none}
+.fdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.ftitle{font-size:12px;font-weight:500;color:#2c2b28;margin-bottom:2px}
+.fdesc{font-size:10.5px;color:#8a8884;line-height:1.5}
+.ftime{font-size:10px;color:#b8b6b0;margin-top:3px}
+
+.mem-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.mem-card{border:1px solid #eceae4;border-radius:9px;padding:12px}
+.mem-type{font-size:9.5px;font-weight:500;color:#c0bdb6;letter-spacing:.6px;text-transform:uppercase;margin-bottom:7px}
+.mem-score{font-size:22px;font-weight:500;line-height:1;margin-bottom:3px}
+.mem-sub{font-size:10.5px;color:#8a8884}
+.mem-prog{height:4px;background:#eceae4;border-radius:2px;overflow:hidden;margin-top:9px}
+.mem-fill{height:100%;border-radius:2px}
+
+.debug-box{background:#f7f6f3;border:1px solid #eceae4;border-radius:7px;padding:11px 13px;font-size:11.5px;line-height:1.7;color:#2c2b28}
+
+.opt-api{border:1px solid #eceae4;border-radius:9px;overflow:hidden;margin-bottom:12px}
+.opt-api-row{padding:11px 14px;display:flex;align-items:center;gap:9px;border-bottom:1px solid #f3f2ee}
+.opt-api-row:last-child{border-bottom:none}
+.api-pill{font-size:10px;font-family:var(--font-mono);color:#534AB7;background:#EEEDFE;padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+
+.qbar-wrap{display:flex;align-items:flex-end;gap:10px;height:72px;padding:0 6px;border-left:1px solid #eceae4;border-bottom:1px solid #eceae4}
+.qbar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.qbar-rect{width:30px;border-radius:3px 3px 0 0}
+.qbar-lbl{font-size:9.5px;color:#a8a6a0}
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:#e0deda;border-radius:2px}
+</style>
+
+<div class="app">
+  <div class="sb">
+    <div class="sb-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 14 14"><path d="M2 7h10M7 2v10M4 4l6 6M10 4l-6 6"/></svg>
+      </div>
+      <div>
+        <div class="logo-name">Agent Insight</div>
+        <div class="logo-env">prod · agent-v2.1</div>
+      </div>
+    </div>
+
+    <div class="sb-body">
+
+      <div class="sb-group">
+        <div class="sb-group-label">
+          <svg viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" rx="1.5"/><path d="M3 5h4M5 3v4"/></svg>
+          资产管理
+        </div>
+        <div style="padding:0 4px">
+          <button class="ni" onclick="go('agents',this)">
+            <svg viewBox="0 0 14 14"><circle cx="7" cy="4.5" r="2.2"/><path d="M2.5 12c0-2.49 2.02-4.5 4.5-4.5s4.5 2.01 4.5 4.5"/><circle cx="12" cy="3.5" r="1.4"/><path d="M12 6.5c1 .28 1.8 1.12 1.8 2.2"/></svg>
+            Agent 管理
+          </button>
+          <button class="ni" onclick="go('skillsmgr',this)">
+            <svg viewBox="0 0 14 14"><rect x="1.5" y="1.5" width="4.5" height="4.5" rx="1"/><rect x="8" y="1.5" width="4.5" height="4.5" rx="1"/><rect x="1.5" y="8" width="4.5" height="4.5" rx="1"/><rect x="8" y="8" width="4.5" height="4.5" rx="1"/></svg>
+            Skills 管理
+            <span class="ni-badge y">2 待优化</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-group">
+        <div class="sb-group-label">
+          <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4"/><path d="M5 2.5v2.5l1.5 1.5"/></svg>
+          运行观测
+        </div>
+        <div style="padding:0 4px">
+          <button class="ni on" onclick="go('trace',this)">
+            <svg viewBox="0 0 14 14"><path d="M2 4h10M2 7h7M2 10h9"/></svg>
+            链路观测
+          </button>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-group">
+        <div class="sb-group-label">
+          <svg viewBox="0 0 10 10"><path d="M2 7l2.5-2.5 2.5 2.5 3-4"/></svg>
+          评测中心
+        </div>
+        <div style="padding:0 4px">
+          <button class="ni" onclick="go('eval',this)">
+            <svg viewBox="0 0 14 14"><path d="M4.5 7l2 2 3-3"/><circle cx="7" cy="7" r="5.5"/></svg>
+            评测任务
+          </button>
+          <button class="ni" onclick="go('dataset',this)">
+            <svg viewBox="0 0 14 14"><ellipse cx="7" cy="4.5" rx="4.5" ry="2"/><path d="M2.5 4.5v3c0 1.1 2.02 2 4.5 2s4.5-.9 4.5-2v-3"/><path d="M2.5 7.5v3c0 1.1 2.02 2 4.5 2s4.5-.9 4.5-2v-3"/></svg>
+            数据集管理
+          </button>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-group">
+        <div class="sb-group-label">
+          <svg viewBox="0 0 10 10"><path d="M5 1.5v7M2 5.5l3 3 3-3"/><path d="M1.5 9h7"/></svg>
+          Skills 工坊
+        </div>
+        <div style="padding:0 4px">
+          <button class="ni" onclick="go('playground',this)">
+            <svg viewBox="0 0 14 14"><rect x="1.5" y="3" width="11" height="8" rx="1.5"/><path d="M4.5 6.5l2 2 3-3"/></svg>
+            Playground
+          </button>
+          <button class="ni" onclick="go('skilldebug',this)">
+            <svg viewBox="0 0 14 14"><path d="M4 2h6v2l1.5 1.5v5.5H2.5V5.5L4 4V2z"/><path d="M5 10v1.5M7 10v1.5M9 10v1.5"/></svg>
+            调测中心
+          </button>
+          <button class="ni" onclick="go('skillrelease',this)">
+            <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5"/><path d="M5 7l2 2 2-4"/></svg>
+            发布管理
+          </button>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-group">
+        <div class="sb-group-label">
+          <svg viewBox="0 0 10 10"><path d="M2 7l2-2 2 2 4-5"/></svg>
+          持续优化
+        </div>
+        <div style="padding:0 4px">
+          <button class="ni" onclick="go('quality',this)">
+            <svg viewBox="0 0 14 14"><path d="M2 9.5l2.5-2.5 2.5 2.5 5-6"/></svg>
+            质量管控
+            <span class="ni-badge r">12</span>
+          </button>
+          <button class="ni" onclick="go('optapi',this)">
+            <svg viewBox="0 0 14 14"><path d="M7 2v4l2.5 2.5"/><circle cx="7" cy="7" r="5.5"/><path d="M4 10l-2 2"/></svg>
+            自优化 API
+          </button>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-group">
+        <div class="sb-group-label">
+          <svg viewBox="0 0 10 10"><path d="M5 2v3.5M5 8v.5"/><circle cx="5" cy="5" r="4"/></svg>
+          故障诊断
+        </div>
+        <div style="padding:0 4px">
+          <button class="ni" onclick="go('memory',this)">
+            <svg viewBox="0 0 14 14"><ellipse cx="7" cy="4.5" rx="4.5" ry="2"/><path d="M2.5 4.5v2.5c0 1.1 2.02 2 4.5 2s4.5-.9 4.5-2V4.5"/><path d="M2.5 7v2.5c0 1.1 2.02 2 4.5 2s4.5-.9 4.5-2V7"/></svg>
+            记忆评估
+          </button>
+          <button class="ni" onclick="go('fault',this)">
+            <svg viewBox="0 0 14 14"><path d="M7 2.5v4.5M7 10v.5"/><circle cx="7" cy="7" r="5.5"/></svg>
+            故障定位
+            <span class="ni-badge r">3</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sb-footer">
+      <div class="user-row">
+        <div class="ava">AI</div>
+        <div>
+          <div class="ava-name">Admin</div>
+          <div class="ava-role">prod · v2.1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <span class="tb-crumb">Agent Insight</span>
+      <span class="tb-sep">›</span>
+      <span class="tb-title" id="ptitle">链路观测</span>
+      <div class="tb-right">
+        <div class="chip" onclick="cycleAgent()">
+          <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="4"/><path d="M6 3v3l1.5 1.5"/></svg>
+          <span id="av">agent-v2.1</span>
+        </div>
+        <div class="chip">近 24h</div>
+        <button class="btn-p" onclick="sendPrompt('帮我导出当前页面的完整分析报告')">导出报告</button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- 资产管理 · Agent -->
+      <div class="panel" id="p-agents">
+        <div class="sh"><span class="sh-t">已注册 Agent</span><button class="btn-p" onclick="sendPrompt('引导我注册一个新 Agent')">+ 注册 Agent</button></div>
+        <div class="grid2">
+          <div class="agcard sel">
+            <div class="ag-top">
+              <div class="ag-icon" style="background:#EEEDFE"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="#534AB7" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="4.5" r="2.2"/><path d="M2.5 12c0-2.49 2.02-4.5 4.5-4.5s4.5 2.01 4.5 4.5"/></svg></div>
+              <div><div class="ag-name">customer-service-agent</div><div class="ag-meta">prod · v2.1 · LangChain</div></div>
+              <span class="bdg bdg-g" style="margin-left:auto">运行中</span>
+            </div>
+            <div class="ag-stats">
+              <div class="ag-stat">成功率 <span>87.3%</span></div>
+              <div class="ag-stat">今日 <span>3,847</span></div>
+              <div class="ag-stat">延迟 <span>1.2s</span></div>
+            </div>
+            <div class="ag-actions">
+              <button class="btn-s" onclick="go('trace',null)">链路</button>
+              <button class="btn-s" onclick="go('eval',null)">评测</button>
+              <button class="btn-sp" onclick="sendPrompt('诊断 customer-service-agent 的当前健康状态')">AI 诊断 ↗</button>
+            </div>
+          </div>
+          <div class="agcard">
+            <div class="ag-top">
+              <div class="ag-icon" style="background:#FAEEDA"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round"><path d="M2 9.5l2.5-2.5 2.5 2.5 5-6"/></svg></div>
+              <div><div class="ag-name">data-pipeline-agent</div><div class="ag-meta">prod · v3.0 · 自研框架</div></div>
+              <span class="bdg bdg-r" style="margin-left:auto">告警</span>
+            </div>
+            <div class="ag-stats">
+              <div class="ag-stat">成功率 <span>61.2%</span></div>
+              <div class="ag-stat">今日 <span>2,103</span></div>
+              <div class="ag-stat">延迟 <span>5.1s</span></div>
+            </div>
+            <div class="ag-actions">
+              <button class="btn-s" onclick="go('fault',null)">定位</button>
+              <button class="btn-s" onclick="go('trace',null)">链路</button>
+              <button class="btn-sp" onclick="sendPrompt('紧急诊断 data-pipeline-agent 告警原因')">紧急诊断 ↗</button>
+            </div>
+          </div>
+        </div>
+        <div class="sh" style="margin-top:4px"><span class="sh-t">关联 Skills 概览</span><button class="btn-s" onclick="go('skillsmgr',null)">管理全部 Skills →</button></div>
+        <div class="grid2">
+          <div class="dscard" style="display:flex;align-items:center;gap:10px;padding:10px 12px">
+            <div style="flex:1"><div style="font-size:12px;font-weight:500;color:#1a1a18">web_search_v3</div><div style="font-size:10px;color:#a8a6a0;margin-top:2px">命中率 94% · 成功率 97%</div></div>
+            <span class="bdg bdg-g">稳定</span>
+          </div>
+          <div class="dscard" style="display:flex;align-items:center;gap:10px;padding:10px 12px">
+            <div style="flex:1"><div style="font-size:12px;font-weight:500;color:#1a1a18">code_exec_v2</div><div style="font-size:10px;color:#a8a6a0;margin-top:2px">命中率 78% · 成功率 81%</div></div>
+            <span class="bdg bdg-y">待优化</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 资产管理 · Skills -->
+      <div class="panel" id="p-skillsmgr">
+        <div class="sh"><span class="sh-t">Skills 资产库</span><button class="btn-p" onclick="sendPrompt('注册一个新的 Skill 资产')">+ 注册 Skill</button></div>
+        <div class="grid2">
+          <div class="skcard">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div><div class="sk-name">web_search_v3</div><div class="sk-ver">搜索检索 · v3.2.1 · 2 个 Agent 使用</div></div>
+              <span class="bdg bdg-g">稳定</span>
+            </div>
+            <div class="sk-stats">
+              <div class="sk-stat">命中率 <span>94%</span></div>
+              <div class="sk-stat">成功率 <span>97%</span></div>
+              <div class="sk-stat">P99 <span>380ms</span></div>
+            </div>
+            <div class="sk-actions">
+              <button class="btn-s">历史</button>
+              <button class="btn-s" onclick="go('playground',null)">去调测</button>
+              <button class="btn-sp" onclick="sendPrompt('分析 web_search_v3 的优化空间')">优化 ↗</button>
+            </div>
+          </div>
+          <div class="skcard">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div><div class="sk-name">code_exec_v2</div><div class="sk-ver">代码执行 · v2.0.4 · 1 个 Agent 使用</div></div>
+              <span class="bdg bdg-y">待优化</span>
+            </div>
+            <div class="sk-stats">
+              <div class="sk-stat">命中率 <span>78%</span></div>
+              <div class="sk-stat">成功率 <span>81%</span></div>
+              <div class="sk-stat">P99 <span>1.2s</span></div>
+            </div>
+            <div class="sk-actions">
+              <button class="btn-s">历史</button>
+              <button class="btn-s" onclick="go('playground',null)">去调测</button>
+              <button class="btn-sp" onclick="sendPrompt('帮我优化 code_exec_v2 的执行效率')">优化 ↗</button>
+            </div>
+          </div>
+        </div>
+        <div class="sh"><span class="sh-t">Skills 版本历史</span><span class="sh-h">点击行查看 diff</span></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#1D9E75"></div><div><div class="ftitle">web_search_v3 · v3.2.1 → v3.2.2 发布中</div><div class="fdesc">召回策略优化，top_k 默认从 5 调整为 8</div><div class="ftime">10 分钟前 · 待审批</div></div><span class="bdg bdg-y">审批中</span></div>
+          <div class="frow"><div class="fdot" style="background:#534AB7"></div><div><div class="ftitle">code_exec_v2 · v2.0.3 → v2.0.4 已发布</div><div class="fdesc">超时阈值从 500ms 调整至 2000ms</div><div class="ftime">昨天 14:32 · 已通过</div></div><span class="bdg bdg-g">已发布</span></div>
+        </div>
+      </div>
+
+      <!-- 链路观测 -->
+      <div class="panel on" id="p-trace">
+        <div class="stats">
+          <div class="stat"><div class="stat-lbl">执行总次数</div><div class="stat-val" id="sv-t">3,847</div><div class="stat-d up">↑ 12% vs 昨日</div></div>
+          <div class="stat"><div class="stat-lbl">任务成功率</div><div class="stat-val" id="sv-s">87.3%</div><div class="stat-d up">↑ 3.2%</div></div>
+          <div class="stat"><div class="stat-lbl">平均延迟</div><div class="stat-val" id="sv-l">1.24s</div><div class="stat-d dn">↑ 80ms</div></div>
+          <div class="stat"><div class="stat-lbl">工具错误率</div><div class="stat-val" id="sv-e">4.8%</div><div class="stat-d up">↓ 1.1%</div></div>
+        </div>
+        <div class="tabs"><div class="tab on">Trace 列表</div><div class="tab">多 Agent 链路</div><div class="tab">组件热图</div></div>
+        <div class="sh"><span class="sh-t">最近执行记录</span><span class="sh-h">点击展开 Span 详情</span></div>
+        <div class="card">
+          <div class="trow" onclick="toggleSpan('s1')">
+            <div class="tid">tr_a1b2c3</div>
+            <div class="ttask">查询北京明日天气并生成出行建议</div>
+            <span class="bdg bdg-g">成功</span>
+            <div class="tbar"><div class="tbar-bg"><div class="tbar-fg" style="width:62%;background:#1D9E75"></div></div></div>
+            <div class="tmeta">1.24s</div>
+          </div>
+          <div id="s1" style="display:none;border-bottom:1px solid #f3f2ee">
+            <div class="span-wrap">
+              <div class="span-row"><div class="span-type">规划</div><div class="span-track"><div class="span-blk" style="left:0;width:18%;background:#EEEDFE;color:#3C3489">plan</div></div><div class="span-ms">218ms</div></div>
+              <div class="span-row"><div class="span-type">LLM</div><div class="span-track"><div class="span-blk" style="left:18%;width:48%;background:#E1F5EE;color:#085041">claude-sonnet</div></div><div class="span-ms">598ms</div></div>
+              <div class="span-row"><div class="span-type">Tool</div><div class="span-track"><div class="span-blk" style="left:66%;width:20%;background:#FAEEDA;color:#633806">weather_api</div></div><div class="span-ms">246ms</div></div>
+              <div class="span-row"><div class="span-type">输出</div><div class="span-track"><div class="span-blk" style="left:86%;width:14%;background:#f3f2ee;color:#5F5E5A">format</div></div><div class="span-ms">178ms</div></div>
+            </div>
+          </div>
+          <div class="trow" onclick="toggleSpan('s2')">
+            <div class="tid">tr_g7h8i9</div>
+            <div class="ttask">多步骤订单处理流程自动化</div>
+            <span class="bdg bdg-r">失败</span>
+            <div class="tbar"><div class="tbar-bg"><div class="tbar-fg" style="width:35%;background:#E24B4A"></div></div></div>
+            <div class="tmeta">0.92s</div>
+          </div>
+          <div id="s2" style="display:none">
+            <div class="span-wrap">
+              <div class="span-row"><div class="span-type">规划</div><div class="span-track"><div class="span-blk" style="left:0;width:22%;background:#EEEDFE;color:#3C3489">plan</div></div><div class="span-ms">204ms</div></div>
+              <div class="span-row"><div class="span-type">Tool</div><div class="span-track"><div class="span-blk" style="left:22%;width:35%;background:#FCEBEB;color:#A32D2D">order_api ✕</div></div><div class="span-ms">716ms</div></div>
+            </div>
+            <div style="padding:4px 14px 10px 77px;display:flex;align-items:center;gap:8px"><span style="font-size:10.5px;color:#A32D2D;background:#FCEBEB;padding:2px 8px;border-radius:4px">超时：order_api P99 > 500ms</span><button class="btn-sp" onclick="go('fault',null)" style="font-size:10.5px">定位根因 ↗</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 评测中心 · 评测任务 -->
+      <div class="panel" id="p-eval">
+        <div class="tabs"><div class="tab on">基于结果</div><div class="tab">基于过程</div><div class="tab">在线评测</div><div class="tab">Benchmark</div></div>
+        <div class="stats">
+          <div class="stat"><div class="stat-lbl">数据集规模</div><div class="stat-val">1,200</div><div class="stat-d" style="color:#a8a6a0">条用例</div></div>
+          <div class="stat"><div class="stat-lbl">整体通过率</div><div class="stat-val">84.2%</div><div class="stat-d up">↑ 6.1% vs v2.0</div></div>
+          <div class="stat"><div class="stat-lbl">Judge 均分</div><div class="stat-val">8.4</div><div class="stat-d" style="color:#a8a6a0">满分 10</div></div>
+          <div class="stat"><div class="stat-lbl">劣化 Case</div><div class="stat-val dn">190</div><div class="stat-d dn">待审查</div></div>
+        </div>
+        <div class="sh"><span class="sh-t">评测明细</span><button class="btn-p" onclick="sendPrompt('分析工具调用链评测失败的共性原因')">AI 分析 ↗</button></div>
+        <div class="card">
+          <table class="etable">
+            <thead><tr><th>任务类型</th><th>用例数</th><th>通过率</th><th>质量分</th><th>趋势</th><th>状态</th></tr></thead>
+            <tbody>
+              <tr onclick="sendPrompt('深入分析信息检索任务的评测详情')"><td>信息检索</td><td>340</td><td><div class="prog"><div class="prog-t"><div class="prog-f" style="width:92%;background:#1D9E75"></div></div>92%</div></td><td>9.1</td><td style="color:#0F6E56;font-size:11px">↑ 稳定</td><td><span class="bdg bdg-g">正常</span></td></tr>
+              <tr onclick="sendPrompt('分析代码生成评测为何关注')"><td>代码生成</td><td>280</td><td><div class="prog"><div class="prog-t"><div class="prog-f" style="width:78%;background:#EF9F27"></div></div>78%</div></td><td>7.8</td><td style="color:#854F0B;font-size:11px">→ 持平</td><td><span class="bdg bdg-y">关注</span></td></tr>
+              <tr onclick="sendPrompt('紧急分析工具调用链劣化原因')"><td>工具调用链</td><td>220</td><td><div class="prog"><div class="prog-t"><div class="prog-f" style="width:68%;background:#E24B4A"></div></div>68%</div></td><td>6.9</td><td style="color:#A32D2D;font-size:11px">↓ 劣化</td><td><span class="bdg bdg-r">劣化</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 评测中心 · 数据集管理 -->
+      <div class="panel" id="p-dataset">
+        <div class="sh"><span class="sh-t">数据集库</span><button class="btn-p" onclick="sendPrompt('帮我创建一个新的评测数据集')">+ 新建数据集</button></div>
+        <div class="grid2">
+          <div class="dscard">
+            <div style="display:flex;justify-content:space-between"><div class="ds-name">通用问答数据集</div><span class="bdg bdg-g">已发布</span></div>
+            <div class="ds-meta">信息检索 · v2.1 · 340 条用例</div>
+            <div class="ds-stats">
+              <div class="ds-stat">最新通过率 <span>92%</span></div>
+              <div class="ds-stat">更新 <span>3 天前</span></div>
+            </div>
+            <div style="display:flex;gap:5px;margin-top:9px">
+              <button class="btn-s">查看</button><button class="btn-s" onclick="go('eval',null)">发起评测</button>
+              <button class="btn-sp" onclick="sendPrompt('分析通用问答数据集的覆盖范围')">分析 ↗</button>
+            </div>
+          </div>
+          <div class="dscard">
+            <div style="display:flex;justify-content:space-between"><div class="ds-name">工具调用压测集</div><span class="bdg bdg-y">迭代中</span></div>
+            <div class="ds-meta">工具调用链 · v1.3 · 220 条用例</div>
+            <div class="ds-stats">
+              <div class="ds-stat">最新通过率 <span>68%</span></div>
+              <div class="ds-stat">更新 <span>今日</span></div>
+            </div>
+            <div style="display:flex;gap:5px;margin-top:9px">
+              <button class="btn-s">查看</button><button class="btn-s" onclick="go('eval',null)">发起评测</button>
+              <button class="btn-sp" onclick="sendPrompt('分析工具调用压测集失败案例的规律')">分析 ↗</button>
+            </div>
+          </div>
+        </div>
+        <div class="sh"><span class="sh-t">黄金样本集（回归基线）</span><span class="sh-h">每次版本变更自动触发</span></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#1D9E75"></div><div style="flex:1"><div class="ftitle">v2.1 回归检测 · 100 条黄金样本</div><div class="fdesc">成功率 91.0%，较 v2.0 提升 +3.2%，无劣化 Case</div><div class="ftime">2 小时前 · 自动触发</div></div><span class="bdg bdg-g">通过</span></div>
+          <div class="frow"><div class="fdot" style="background:#A32D2D"></div><div style="flex:1"><div class="ftitle">v2.0 回归检测 · 100 条黄金样本</div><div class="fdesc">工具调用链通过率下降 5.1%，触发 Quality Gate 拦截</div><div class="ftime">昨天 09:12 · 自动触发</div></div><span class="bdg bdg-r">拦截</span></div>
+        </div>
+      </div>
+
+      <!-- Skills 工坊 · Playground -->
+      <div class="panel" id="p-playground">
+        <div class="sh"><span class="sh-t">Skills Playground</span><div style="display:flex;gap:6px"><button class="btn-p" onclick="sendPrompt('运行当前 Skill 的全部调测用例')">▶ 运行</button><button class="btn-s">保存草稿</button></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px">
+          <div>
+            <div style="font-size:10.5px;color:#a8a6a0;margin-bottom:5px">选择 Skill</div>
+            <div style="border:1px solid #eceae4;border-radius:7px;overflow:hidden">
+              <div style="padding:7px 11px;font-size:11.5px;background:#EEEDFE;color:#3C3489;font-weight:500;border-bottom:1px solid #CECBF6">web_search_v3</div>
+              <div style="padding:7px 11px;font-size:11.5px;color:#6b6a66;border-bottom:1px solid #f3f2ee;cursor:pointer">code_exec_v2</div>
+              <div style="padding:7px 11px;font-size:11.5px;color:#6b6a66;cursor:pointer">pdf_parse_v1</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;color:#a8a6a0;margin-bottom:5px">测试输入</div>
+            <div style="border:1px solid #eceae4;border-radius:7px;padding:9px 11px;font-size:11.5px;color:#2c2b28;background:#fff;min-height:76px;font-family:var(--font-mono)">{"query": "2026年杭州AI峰会时间", "top_k": 5}</div>
+          </div>
+        </div>
+        <div class="pg">
+          <div class="pg-bar"><span style="color:#534AB7;font-weight:500">web_search_v3.py</span><span>Python · v3.2.1</span></div>
+          <div class="pg-code"><span style="color:#0F6E56">def</span> <span style="color:#534AB7">web_search</span>(query: str, top_k: int = 5) -> list:
+    <span style="color:#8a8884">"""搜索并返回 top_k 条相关结果"""</span>
+    results = search_engine.query(query, k=top_k)
+    <span style="color:#0F6E56">return</span> [{"title": r.title, "url": r.url,
+             "snippet": r.snippet} <span style="color:#0F6E56">for</span> r <span style="color:#0F6E56">in</span> results]</div>
+          <div class="pg-out">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="#0F6E56" stroke-width="1.5" stroke-linecap="round"><path d="M2 6.5l3 3 6-5.5"/></svg>
+            通过 3 / 3 用例 · 平均耗时 312ms · Token 消耗 184
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills 工坊 · 调测中心 -->
+      <div class="panel" id="p-skilldebug">
+        <div class="sh"><span class="sh-t">调测中心</span><span class="sh-h">批量运行测试用例，快速发现问题</span></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#1D9E75"></div><div style="flex:1"><div class="ftitle">web_search_v3 · 批量调测 20 条用例</div><div class="fdesc">通过 19 / 20，失败 1 条：query 含特殊符号时编码异常</div><div class="ftime">刚刚完成 · 耗时 4.2s</div></div><span class="bdg bdg-y">1 失败</span></div>
+          <div class="frow" onclick="sendPrompt('分析 code_exec_v2 调测失败的根因')"><div class="fdot" style="background:#E24B4A"></div><div style="flex:1"><div class="ftitle">code_exec_v2 · 批量调测 15 条用例</div><div class="fdesc">通过 10 / 15，失败集中在含递归逻辑的代码段，超时率高</div><div class="ftime">10 分钟前 · 耗时 18.7s</div></div><span class="bdg bdg-r">5 失败</span></div>
+        </div>
+        <div class="sh"><span class="sh-t">Mock 环境配置</span></div>
+        <div class="card" style="padding:12px 14px">
+          <div style="font-size:11.5px;color:#2c2b28;margin-bottom:8px">当前 Mock 的外部依赖：</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:11px"><span style="color:#6b6a66">search_engine API</span><span class="bdg bdg-g">已 Mock</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:11px"><span style="color:#6b6a66">order_api</span><span class="bdg bdg-g">已 Mock</span></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;font-size:11px"><span style="color:#6b6a66">llm inference</span><span class="bdg bdg-y">真实调用</span></div>
+          </div>
+          <button class="btn-sp" style="margin-top:10px;font-size:11px" onclick="sendPrompt('帮我配置 llm inference 的 Mock 环境')">配置 Mock ↗</button>
+        </div>
+      </div>
+
+      <!-- Skills 工坊 · 发布管理 -->
+      <div class="panel" id="p-skillrelease">
+        <div class="sh"><span class="sh-t">发布管理</span><button class="btn-p" onclick="sendPrompt('发起一次 web_search_v3 的发布流程')">发起发布</button></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#EF9F27"></div><div style="flex:1"><div class="ftitle">web_search_v3 · v3.2.1 → v3.2.2</div><div class="fdesc">召回策略优化，top_k 默认值调整；调测通过率 19/20</div><div class="ftime">等待审批 · 提交 10 分钟前</div></div><div style="display:flex;gap:5px;align-self:center"><button class="btn-s">查看 Diff</button><button class="btn-p" onclick="sendPrompt('审批通过 web_search_v3 v3.2.2 发布')">审批 ↗</button></div></div>
+          <div class="frow"><div class="fdot" style="background:#1D9E75"></div><div style="flex:1"><div class="ftitle">code_exec_v2 · v2.0.3 → v2.0.4</div><div class="fdesc">超时阈值调整，回归基线测试通过率 98%</div><div class="ftime">已发布 · 昨天 14:32</div></div><span class="bdg bdg-g">已上线</span></div>
+        </div>
+        <div class="sh"><span class="sh-t">回滚记录</span></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#E24B4A"></div><div><div class="ftitle">code_exec_v2 · v2.0.2 紧急回滚</div><div class="fdesc">生产成功率从 89% 骤降至 61%，5 分钟内完成回滚</div><div class="ftime">3 天前 · 自动触发告警</div></div></div>
+        </div>
+      </div>
+
+      <!-- 持续优化 · 质量管控 -->
+      <div class="panel" id="p-quality">
+        <div class="stats">
+          <div class="stat"><div class="stat-lbl">当前版本</div><div class="stat-val" style="font-size:18px">v2.1</div><div class="stat-d" style="color:#a8a6a0">基线 v2.0</div></div>
+          <div class="stat"><div class="stat-lbl">质量分变化</div><div class="stat-val up">+6.1%</div><div class="stat-d up">通过 Gate</div></div>
+          <div class="stat"><div class="stat-lbl">劣化 Case</div><div class="stat-val dn">12</div><div class="stat-d dn">需人工审查</div></div>
+          <div class="stat"><div class="stat-lbl">CI 状态</div><div class="stat-val" style="font-size:15px;color:#0F6E56">通过</div><div class="stat-d" style="color:#a8a6a0">#48</div></div>
+        </div>
+        <div class="sh"><span class="sh-t">版本成功率对比</span></div>
+        <div class="card" style="padding:14px 18px 12px;margin-bottom:12px">
+          <div class="qbar-wrap">
+            <div class="qbar-col"><div class="qbar-rect" style="height:47px;background:#D3D1C7"></div><div class="qbar-lbl">v1.9</div></div>
+            <div class="qbar-col"><div class="qbar-rect" style="height:63px;background:#85B7EB"></div><div class="qbar-lbl">v2.0</div></div>
+            <div class="qbar-col"><div class="qbar-rect" style="height:80px;background:#534AB7"></div><div class="qbar-lbl">v2.1</div></div>
+          </div>
+          <div style="display:flex;gap:14px;margin-top:8px;font-size:10.5px;color:#a8a6a0">
+            <span>v1.9: 79.5%</span><span>v2.0: 84.1%</span><span style="color:#534AB7;font-weight:500">v2.1: 87.3%</span>
+          </div>
+        </div>
+        <div class="sh"><span class="sh-t">劣化 Case</span><button class="btn-p" onclick="sendPrompt('AI 分析 v2.1 工具调用链劣化的根本原因')">AI 根因 ↗</button></div>
+        <div class="card">
+          <div class="frow" onclick="sendPrompt('定位 case_012 工具调用链劣化原因')"><div class="fdot" style="background:#E24B4A"></div><div style="flex:1"><div class="ftitle">case_012 — 工具调用链超时</div><div class="fdesc">v2.0 成功率 91% → v2.1 降至 68%</div></div><span class="bdg bdg-r">严重</span></div>
+          <div class="frow" onclick="sendPrompt('分析 case_047 代码生成质量下降原因')"><div class="fdot" style="background:#EF9F27"></div><div style="flex:1"><div class="ftitle">case_047 — 代码生成质量下滑</div><div class="fdesc">LLM Judge 分从 8.2 降至 7.1</div></div><span class="bdg bdg-y">关注</span></div>
+        </div>
+      </div>
+
+      <!-- 持续优化 · 自优化 API -->
+      <div class="panel" id="p-optapi">
+        <div class="sh"><span class="sh-t">自优化 API — 最优路径推荐</span><span class="sh-h">Agent 执行前调用，获取历史最优路径参考</span></div>
+        <div class="opt-api">
+          <div class="opt-api-row">
+            <span class="api-pill">GET /api/v1/optimal-paths</span>
+            <span style="font-size:11px;color:#a8a6a0">按 task_type + context 返回推荐执行路径</span>
+            <button class="btn-sp" style="margin-left:auto;font-size:11px" onclick="sendPrompt('如何在 Agent 中接入自优化 API')">接入文档 ↗</button>
+          </div>
+          <div class="opt-api-row">
+            <div style="display:flex;gap:14px;font-size:11px">
+              <span style="color:#a8a6a0">今日调用 <span style="font-weight:500;color:#2c2b28">1,204</span></span>
+              <span style="color:#a8a6a0">平均效率提升 <span style="font-weight:500;color:#0F6E56">+31%</span></span>
+              <span style="color:#a8a6a0">路径库 <span style="font-weight:500;color:#2c2b28">8,429 条</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="sh"><span class="sh-t">近期优化记录</span></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#1D9E75"></div><div><div class="ftitle">信息检索路径优化</div><div class="fdesc">新增 3 条最优路径，avg 延迟降低 18%</div><div class="ftime">今日 08:30 · 自动更新</div></div></div>
+          <div class="frow"><div class="fdot" style="background:#534AB7"></div><div><div class="ftitle">工具调用链路径沉淀</div><div class="fdesc">code_exec_v2 超时修复后，沉淀 47 条成功路径</div><div class="ftime">昨天 · 版本发布触发</div></div></div>
+        </div>
+      </div>
+
+      <!-- 故障诊断 · 记忆评估 -->
+      <div class="panel" id="p-memory">
+        <div class="sh"><span class="sh-t">记忆能力总览</span></div>
+        <div class="mem-grid">
+          <div class="mem-card"><div class="mem-type">工作记忆</div><div class="mem-score" style="color:#085041">91%</div><div class="mem-sub">上下文利用率</div><div class="mem-prog"><div class="mem-fill" style="width:91%;background:#1D9E75"></div></div></div>
+          <div class="mem-card"><div class="mem-type">语义记忆</div><div class="mem-score" style="color:#085041">86%</div><div class="mem-sub">检索召回准确率</div><div class="mem-prog"><div class="mem-fill" style="width:86%;background:#1D9E75"></div></div></div>
+          <div class="mem-card"><div class="mem-type">情节记忆</div><div class="mem-score" style="color:#854F0B">72%</div><div class="mem-sub">历史经验复用率</div><div class="mem-prog"><div class="mem-fill" style="width:72%;background:#EF9F27"></div></div></div>
+          <div class="mem-card"><div class="mem-type">个性化记忆</div><div class="mem-score" style="color:#085041">88%</div><div class="mem-sub">用户偏好适应</div><div class="mem-prog"><div class="mem-fill" style="width:88%;background:#1D9E75"></div></div></div>
+        </div>
+        <div class="sh"><span class="sh-t">有记忆 vs 无记忆</span><button class="btn-sp" onclick="sendPrompt('分析情节记忆复用率低的根因并给出优化建议')">优化建议 ↗</button></div>
+        <div class="card">
+          <div class="frow"><div class="fdot" style="background:#1D9E75"></div><div><div class="ftitle">任务成功率提升</div><div class="fdesc">有记忆 87.3%，无记忆 71.2%，记忆正向提升 +22.6%</div></div></div>
+          <div class="frow"><div class="fdot" style="background:#EF9F27"></div><div style="flex:1"><div class="ftitle">陈旧记忆干扰检测</div><div class="fdesc">8 条过期记忆影响决策路径，建议更新索引</div></div><button class="btn-sp" style="align-self:center;font-size:11px" onclick="sendPrompt('清理陈旧记忆并更新索引')">修复 ↗</button></div>
+        </div>
+      </div>
+
+      <!-- 故障诊断 · 故障定位 -->
+      <div class="panel" id="p-fault">
+        <div class="tabs"><div class="tab on">有数据集</div><div class="tab">无数据集</div><div class="tab">知识库</div></div>
+        <div class="sh"><span class="sh-t">近期故障事件</span><button class="btn-p" onclick="sendPrompt('对近 24h 故障进行聚类分析并生成报告')">AI 聚类分析 ↗</button></div>
+        <div class="card" style="margin-bottom:12px">
+          <div class="frow" onclick="sendPrompt('定位 order_api 超时的根因')"><div class="fdot" style="background:#E24B4A"></div><div style="flex:1"><div class="ftitle">工具调用超时 — tr_g7h8i9</div><div class="fdesc">order_api 第 3 步超时，影响 68 个同类 Session</div><div class="ftime">2 分钟前</div></div><span class="bdg bdg-r">Tool</span></div>
+          <div class="frow" onclick="sendPrompt('分析上下文截断导致推理失误的详情')"><div class="fdot" style="background:#EF9F27"></div><div style="flex:1"><div class="ftitle">上下文截断致推理失误</div><div class="fdesc">Token 超限后关键历史信息丢失</div><div class="ftime">18 分钟前</div></div><span class="bdg bdg-y">Context</span></div>
+        </div>
+        <div class="sh"><span class="sh-t">LLM-as-Debugger 自动诊断</span></div>
+        <div class="card" style="padding:12px 14px">
+          <div style="font-size:10.5px;color:#a8a6a0;margin-bottom:7px">针对 tr_g7h8i9 · order_api 超时</div>
+          <div class="debug-box"><span style="font-weight:500;color:#A32D2D">根因：</span>order_api 并发高峰 P99 超出 500ms 阈值，且 Skill 未配置重试逻辑。<br><span style="font-weight:500;color:#0F6E56">建议：</span>超时阈值调整至 2000ms，增加指数退避重试（最多 3 次）。</div>
+          <div style="display:flex;gap:6px;margin-top:10px">
+            <button class="btn-p" onclick="sendPrompt('生成修复 order_api 超时的 Skill 代码，含指数退避重试')">生成修复 Skill ↗</button>
+            <button class="btn-s" onclick="sendPrompt('将此故障归档到知识库')">存入知识库</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const agents=['agent-v2.1','agent-v2.0','agent-v1.9'];
+const vd={'agent-v2.1':{t:'3,847',s:'87.3%',l:'1.24s',e:'4.8%'},'agent-v2.0':{t:'3,210',s:'84.1%',l:'1.41s',e:'5.9%'},'agent-v1.9':{t:'2,780',s:'79.5%',l:'1.68s',e:'7.2%'}};
+let ai=0;
+function cycleAgent(){
+  ai=(ai+1)%agents.length;
+  const v=agents[ai];document.getElementById('av').textContent=v;
+  const d=vd[v];
+  document.getElementById('sv-t').textContent=d.t;
+  document.getElementById('sv-s').textContent=d.s;
+  document.getElementById('sv-l').textContent=d.l;
+  document.getElementById('sv-e').textContent=d.e;
+}
+const panelMap={agents:'p-agents',skillsmgr:'p-skillsmgr',trace:'p-trace',eval:'p-eval',dataset:'p-dataset',playground:'p-playground',skilldebug:'p-skilldebug',skillrelease:'p-skillrelease',quality:'p-quality',optapi:'p-optapi',memory:'p-memory',fault:'p-fault'};
+const titles={agents:'Agent 管理',skillsmgr:'Skills 管理',trace:'链路观测',eval:'评测任务',dataset:'数据集管理',playground:'Playground',skilldebug:'调测中心',skillrelease:'发布管理',quality:'质量管控',optapi:'自优化 API',memory:'记忆评估',fault:'故障定位'};
+function go(id,btn){
+  Object.values(panelMap).forEach(p=>document.getElementById(p).classList.remove('on'));
+  const pid=panelMap[id];if(pid)document.getElementById(pid).classList.add('on');
+  document.querySelectorAll('.ni').forEach(el=>el.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  document.getElementById('ptitle').textContent=titles[id]||id;
+}
+function toggleSpan(id){const el=document.getElementById(id);el.style.display=el.style.display==='none'?'block':'none';}
+</script>
